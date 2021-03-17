@@ -10,7 +10,7 @@ from urllib.parse import urlencode
 import requests
 import time
 import csv
-import chromedriver_binary  # Adds chromedriver binary to path
+import chromedriver_binary
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -67,6 +67,13 @@ def visit(page, switch, zip):
 
     
     while True:
+        
+        try:
+            if s.driver.find_element_by_xpath('//*[@id="grid-search-results"]/div[2]/div/h3').text == 'No matching results':
+                return 'break'
+        except:
+            pass
+        
         try:
             h = s.driver.page_source
         except:
