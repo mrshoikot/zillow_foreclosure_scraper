@@ -54,6 +54,14 @@ def visit(page, switch, zip):
         print(url)
         s.driver.get(url)
 
+        try:
+            notfound = s.driver.find_element_by_xpath('//*[@id="grid-search-results"]/div[2]/div')
+            if notfound and notfound.text.find("find this area") != -1:
+                return 'break'
+        except:
+            pass
+
+
         if s.driver.find_element_by_xpath('//*[@id="grid-search-results"]/div[1]/div/div[1]/div/button[1]/div').text == '0':
             switch = True
 
@@ -69,7 +77,7 @@ def visit(page, switch, zip):
     while True:
         
         try:
-            if s.driver.find_element_by_xpath('//*[@id="grid-search-results"]/div[2]/div/h3').text == 'No matching results':
+            if s.driver.find_element_by_class_name('zsg-content_collapsed').text == 'No matching results':
                 return 'break'
         except:
             pass
@@ -157,7 +165,7 @@ for row in csv.reader(open('zip.csv')):
                     continue
 
                 if county not in data['data']['property']['county']:
-                    print(str(id)+" suspecious!")
+                    print(str(id)+" suspecious! - " + data['data']['property']['county'])
                     continue
 
                 # print(data['data']['property']['foreclosureTypes']['isPreforeclosure'])
